@@ -17,17 +17,6 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  create mode 100644 drivers/net/ethernet/mediatek/mt7530.c
  create mode 100644 drivers/net/ethernet/mediatek/mt7530.h
 
---- a/drivers/net/ethernet/mediatek/Makefile
-+++ b/drivers/net/ethernet/mediatek/Makefile
-@@ -15,6 +15,6 @@ mtk-eth-soc-$(CONFIG_NET_MEDIATEK_MT7620
- mtk-eth-soc-$(CONFIG_NET_MEDIATEK_MT7621)	+= soc_mt7621.o
- 
- obj-$(CONFIG_NET_MEDIATEK_ESW_RT3050)		+= esw_rt3050.o
--obj-$(CONFIG_NET_MEDIATEK_GSW_MT7620)		+= gsw_mt7620.o
--obj-$(CONFIG_NET_MEDIATEK_GSW_MT7621)		+= gsw_mt7621.o
-+obj-$(CONFIG_NET_MEDIATEK_GSW_MT7620)		+= gsw_mt7620.o mt7530.o
-+obj-$(CONFIG_NET_MEDIATEK_GSW_MT7621)		+= gsw_mt7621.o mt7530.o
- obj-$(CONFIG_NET_MEDIATEK_SOC)			+= mtk-eth-soc.o
 --- a/drivers/net/ethernet/mediatek/gsw_mt7620.c
 +++ b/drivers/net/ethernet/mediatek/gsw_mt7620.c
 @@ -67,6 +67,9 @@ static void mt7620_hw_init(struct mt7620
@@ -1141,34 +1130,6 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
 +int mt7530_probe(struct device *dev, void __iomem *base, struct mii_bus *bus, int vlan);
 +
 +#endif
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1291,8 +1291,13 @@ static int __init fe_init(struct net_dev
- 	}
- 
- 	err = fe_hw_init(dev);
--	if (!err)
--		return 0;
-+	if (err)
-+		goto err_phy_disconnect;
-+
-+	if ((priv->flags & FE_FLAG_HAS_SWITCH) && priv->soc->switch_config)
-+		priv->soc->switch_config(priv);
-+
-+	return 0;
- 
- err_phy_disconnect:
- 	if (priv->phy)
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.h
-@@ -383,6 +383,7 @@ struct fe_soc_data {
- 	int (*fwd_config)(struct fe_priv *priv);
- 	void (*tx_dma)(struct fe_tx_dma *txd);
- 	int (*switch_init)(struct fe_priv *priv);
-+	int (*switch_config)(struct fe_priv *priv);
- 	void (*port_init)(struct fe_priv *priv, struct device_node *port);
- 	int (*has_carrier)(struct fe_priv *priv);
- 	int (*mdio_init)(struct fe_priv *priv);
 --- a/drivers/net/ethernet/mediatek/soc_mt7620.c
 +++ b/drivers/net/ethernet/mediatek/soc_mt7620.c
 @@ -313,6 +313,7 @@ static struct fe_soc_data mt7620_data =

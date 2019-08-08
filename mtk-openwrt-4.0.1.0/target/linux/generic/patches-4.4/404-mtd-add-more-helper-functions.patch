@@ -1,6 +1,6 @@
 --- a/drivers/mtd/mtdpart.c
 +++ b/drivers/mtd/mtdpart.c
-@@ -454,14 +454,12 @@ static struct mtd_part *allocate_partiti
+@@ -475,14 +475,12 @@ static struct mtd_part *allocate_partiti
  	if (slave->offset == MTDPART_OFS_APPEND)
  		slave->offset = cur_offset;
  	if (slave->offset == MTDPART_OFS_NXTBLK) {
@@ -18,7 +18,7 @@
  	}
  	if (slave->offset == MTDPART_OFS_RETAIN) {
  		slave->offset = cur_offset;
-@@ -679,6 +677,17 @@ run_parsers_by_type(struct mtd_part *sla
+@@ -700,6 +698,17 @@ run_parsers_by_type(struct mtd_part *sla
  	return nr_parts;
  }
  
@@ -36,7 +36,7 @@
  #ifdef CONFIG_MTD_SPLIT_FIRMWARE_NAME
  #define SPLIT_FIRMWARE_NAME	CONFIG_MTD_SPLIT_FIRMWARE_NAME
  #else
-@@ -978,6 +987,24 @@ int mtd_is_partition(const struct mtd_in
+@@ -999,6 +1008,24 @@ int mtd_is_partition(const struct mtd_in
  }
  EXPORT_SYMBOL_GPL(mtd_is_partition);
  
@@ -74,7 +74,7 @@
  				       const char *name, int offset, int size);
 --- a/include/linux/mtd/mtd.h
 +++ b/include/linux/mtd/mtd.h
-@@ -334,6 +334,24 @@ static inline uint32_t mtd_mod_by_eb(uin
+@@ -402,6 +402,24 @@ static inline uint32_t mtd_mod_by_eb(uin
  	return do_div(sz, mtd->erasesize);
  }
  

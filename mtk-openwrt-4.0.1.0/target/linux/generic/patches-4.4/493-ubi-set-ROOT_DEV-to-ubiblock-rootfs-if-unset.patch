@@ -5,8 +5,6 @@ Subject: [PATCH 5/5] ubi: set ROOT_DEV to ubiblock "rootfs" if unset
 To: openwrt-devel@lists.openwrt.org
 
 Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-diff --git a/drivers/mtd/ubi/block.c b/drivers/mtd/ubi/block.c
-index b2fb052..0ebc339 100644
 --- a/drivers/mtd/ubi/block.c
 +++ b/drivers/mtd/ubi/block.c
 @@ -50,6 +50,7 @@
@@ -17,7 +15,7 @@ index b2fb052..0ebc339 100644
  
  #include "ubi-media.h"
  #include "ubi.h"
-@@ -448,6 +449,14 @@ int ubiblock_create(struct ubi_volume_info *vi)
+@@ -448,6 +449,14 @@ int ubiblock_create(struct ubi_volume_in
  	dev_info(disk_to_dev(dev->gd), "created from ubi%d:%d(%s)",
  		 dev->ubi_num, dev->vol_id, vi->name);
  	mutex_unlock(&devices_mutex);

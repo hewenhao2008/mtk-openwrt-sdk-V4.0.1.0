@@ -1,7 +1,5 @@
-Index: linux-4.4.43/drivers/mtd/mtdpart.c
-===================================================================
---- linux-4.4.43.orig/drivers/mtd/mtdpart.c
-+++ linux-4.4.43/drivers/mtd/mtdpart.c
+--- a/drivers/mtd/mtdpart.c
++++ b/drivers/mtd/mtdpart.c
 @@ -37,6 +37,8 @@
  #include "mtdcore.h"
  #include "mtdsplit/mtdsplit.h"
@@ -127,15 +125,13 @@ Index: linux-4.4.43/drivers/mtd/mtdpart.c
  	}
  
  	mtd_set_ooblayout(&slave->mtd, &part_ooblayout_ops);
-Index: linux-4.4.43/include/linux/mtd/mtd.h
-===================================================================
---- linux-4.4.43.orig/include/linux/mtd/mtd.h
-+++ linux-4.4.43/include/linux/mtd/mtd.h
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
 @@ -55,6 +55,11 @@ struct erase_info {
  	u_long priv;
  	u_char state;
  	struct erase_info *next;
-+	136 +
++
 +	u8 *erase_buf;
 +	u32 erase_buf_ofs;
 +	bool partial_start;
