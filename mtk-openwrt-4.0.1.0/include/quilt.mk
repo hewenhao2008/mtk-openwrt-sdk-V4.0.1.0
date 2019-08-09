@@ -89,12 +89,20 @@ define Build/Patch/Default
 	$(if $(QUILT),touch $(PKG_BUILD_DIR)/.quilt_used)
 endef
 
+ifeq ($(BOARD),ramips)
+  ifeq ($(SUBTARGET),mt7621)
+    FILES_DIR += $(CURDIR)/../mediatek/files
+    PATCH_DIR_MTK = $(CURDIR)/../mediatek/patches-$(KERNEL_PATCHVER)
+  endif
+endif
+
 kernel_files=$(foreach fdir,$(GENERIC_FILES_DIR) $(FILES_DIR),$(fdir)/.)
 define Kernel/Patch/Default
 	$(if $(QUILT),rm -rf $(PKG_BUILD_DIR)/patches; mkdir -p $(PKG_BUILD_DIR)/patches)
 	$(if $(kernel_files),$(CP) $(kernel_files) $(LINUX_DIR)/)
 	find $(LINUX_DIR)/ -name \*.rej -or -name \*.orig | $(XARGS) rm -f
 	$(call PatchDir,$(PKG_BUILD_DIR),$(GENERIC_PATCH_DIR),generic/)
+	$(if $(PATCH_DIR_MTK),$(call PatchDir,$(PKG_BUILD_DIR),$(PATCH_DIR_MTK),platform/))
 	$(call PatchDir,$(PKG_BUILD_DIR),$(PATCH_DIR),platform/)
 endef
 
