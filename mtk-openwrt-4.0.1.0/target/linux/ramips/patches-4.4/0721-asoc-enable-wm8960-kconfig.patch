@@ -1,6 +1,6 @@
 --- a/sound/soc/codecs/Kconfig
 +++ b/sound/soc/codecs/Kconfig
-@@ -831,7 +831,7 @@ config SND_SOC_WM8955
+@@ -825,7 +825,7 @@ config SND_SOC_WM8955
  	tristate
  
  config SND_SOC_WM8960

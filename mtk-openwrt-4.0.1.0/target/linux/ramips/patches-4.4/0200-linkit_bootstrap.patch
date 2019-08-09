@@ -1,13 +1,10 @@
 --- a/drivers/misc/Makefile
 +++ b/drivers/misc/Makefile
-@@ -56,6 +56,7 @@ obj-$(CONFIG_GENWQE)		+= genwqe/
+@@ -57,3 +57,4 @@ obj-$(CONFIG_GENWQE)		+= genwqe/
  obj-$(CONFIG_ECHO)		+= echo/
  obj-$(CONFIG_VEXPRESS_SYSCFG)	+= vexpress-syscfg.o
  obj-$(CONFIG_CXL_BASE)		+= cxl/
 +obj-$(CONFIG_SOC_MT7620)	+= linkit.o
- obj-$(CONFIG_UID_CPUTIME) += uid_cputime.o
- obj-$(CONFIG_ARCH_MEDIATEK) += mediatek/
- obj-$(CONFIG_UID_SYS_STATS) += uid_sys_stats.o
 --- /dev/null
 +++ b/drivers/misc/linkit.c
 @@ -0,0 +1,84 @@

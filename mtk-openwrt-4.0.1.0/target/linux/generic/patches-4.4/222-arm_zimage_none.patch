@@ -48,7 +48,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
 +input_data_end:
 --- a/init/Kconfig
 +++ b/init/Kconfig
-@@ -125,6 +125,9 @@ config HAVE_KERNEL_LZO
+@@ -115,6 +115,9 @@ config HAVE_KERNEL_LZO
  config HAVE_KERNEL_LZ4
  	bool
  
@@ -58,7 +58,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  choice
  	prompt "Kernel compression mode"
  	default KERNEL_GZIP
-@@ -191,9 +194,10 @@ config KERNEL_LZO
+@@ -181,9 +184,10 @@ config KERNEL_LZO
  	bool "LZO"
  	depends on HAVE_KERNEL_LZO
  	help
@@ -72,7 +72,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
  config KERNEL_LZ4
  	bool "LZ4"
-@@ -207,6 +211,12 @@ config KERNEL_LZ4
+@@ -197,6 +201,12 @@ config KERNEL_LZ4
  	  is about 8% bigger than LZO. But the decompression speed is
  	  faster than LZO.
  
@@ -107,7 +107,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
 +#endif
 --- a/scripts/Makefile.lib
 +++ b/scripts/Makefile.lib
-@@ -343,6 +343,13 @@ cmd_lz4 = (cat $(filter-out FORCE,$^) |
+@@ -337,6 +337,13 @@ cmd_lz4 = (cat $(filter-out FORCE,$^) |
  	lz4c -l -c1 stdin stdout && $(call size_append, $(filter-out FORCE,$^))) > $@ || \
  	(rm -f $@ ; false)
  
@@ -123,7 +123,7 @@ Signed-off-by: Felix Fietkau <nbd@nbd.name>
  
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -61,6 +61,7 @@ config ARM
+@@ -59,6 +59,7 @@ config ARM
  	select HAVE_KERNEL_LZMA
  	select HAVE_KERNEL_LZO
  	select HAVE_KERNEL_XZ

@@ -8,6 +8,8 @@
  
  /* Values for "inv" field in struct ipt_ip. */
  #define IPT_INV_VIA_IN		0x01	/* Invert the sense of IN IFACE. */
+diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
+index dac62b5..73c7f80 100644
 --- a/net/ipv4/netfilter/ip_tables.c
 +++ b/net/ipv4/netfilter/ip_tables.c
 @@ -82,6 +82,9 @@ ip_packet_match(const struct iphdr *ip,
@@ -50,7 +52,7 @@
  static bool
  ip_checkentry(const struct ipt_ip *ip)
  {
-@@ -659,6 +685,8 @@ find_check_entry(struct ipt_entry *e, st
+@@ -659,6 +685,8 @@ find_check_entry(struct ipt_entry *e, struct net *net, const char *name,
  	struct xt_mtchk_param mtpar;
  	struct xt_entry_match *ematch;
  
@@ -59,7 +61,7 @@
  	if (!xt_percpu_counter_alloc(alloc_state, &e->counters))
  		return -ENOMEM;
  
-@@ -957,6 +985,7 @@ copy_entries_to_user(unsigned int total_
+@@ -957,6 +985,7 @@ copy_entries_to_user(unsigned int total_size,
  	const struct xt_table_info *private = table->private;
  	int ret = 0;
  	const void *loc_cpu_entry;
@@ -67,7 +69,7 @@
  
  	counters = alloc_counters(table);
  	if (IS_ERR(counters))
-@@ -984,7 +1013,15 @@ copy_entries_to_user(unsigned int total_
+@@ -984,7 +1013,15 @@ copy_entries_to_user(unsigned int total_size,
  			goto free_counters;
  		}
  

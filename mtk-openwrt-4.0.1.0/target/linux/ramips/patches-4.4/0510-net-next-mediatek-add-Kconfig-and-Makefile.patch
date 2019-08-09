@@ -17,24 +17,36 @@ Signed-off-by: Michael Lee <igvtee@gmail.com>
  create mode 100644 drivers/net/ethernet/mediatek/Kconfig
  create mode 100644 drivers/net/ethernet/mediatek/Makefile
 
---- a/drivers/net/ethernet/mediatek/Kconfig
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -106,6 +106,7 @@ config LANTIQ_ETOP
+ 	  Support for the MII0 inside the Lantiq SoC
+ 
+ source "drivers/net/ethernet/marvell/Kconfig"
++source "drivers/net/ethernet/mediatek/Kconfig"
+ source "drivers/net/ethernet/mellanox/Kconfig"
+ source "drivers/net/ethernet/micrel/Kconfig"
+ source "drivers/net/ethernet/microchip/Kconfig"
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -46,6 +46,7 @@ obj-$(CONFIG_JME) += jme.o
+ obj-$(CONFIG_KORINA) += korina.o
+ obj-$(CONFIG_LANTIQ_ETOP) += lantiq_etop.o
+ obj-$(CONFIG_NET_VENDOR_MARVELL) += marvell/
++obj-$(CONFIG_NET_VENDOR_MEDIATEK) += mediatek/
+ obj-$(CONFIG_NET_VENDOR_MELLANOX) += mellanox/
+ obj-$(CONFIG_NET_VENDOR_MICREL) += micrel/
+ obj-$(CONFIG_NET_VENDOR_MICROCHIP) += microchip/
+--- /dev/null
 +++ b/drivers/net/ethernet/mediatek/Kconfig
-@@ -1,21 +1,62 @@
- config NET_VENDOR_MEDIATEK
--	bool "MediaTek ethernet driver"
--	depends on ARCH_MEDIATEK
--	---help---
--	  If you have a Mediatek SoC with ethernet, say Y.
--
--if NET_VENDOR_MEDIATEK
+@@ -0,0 +1,62 @@
++config NET_VENDOR_MEDIATEK
 +	tristate "Mediatek/Ralink ethernet driver"
 +	depends on RALINK
 +	help
 +	  This driver supports the ethernet mac inside the Mediatek and Ralink WiSoCs
- 
- config NET_MEDIATEK_SOC
--	tristate "MediaTek SoC Gigabit Ethernet support"
--	depends on NET_VENDOR_MEDIATEK
++
++config NET_MEDIATEK_SOC
 +	def_tristate NET_VENDOR_MEDIATEK
 +
 +if NET_MEDIATEK_SOC
@@ -66,16 +78,8 @@ Signed-off-by: Michael Lee <igvtee@gmail.com>
 +config NET_MEDIATEK_MDIO
 +	def_bool NET_MEDIATEK_SOC
 +	depends on (NET_MEDIATEK_RT2880 || NET_MEDIATEK_RT3883 || NET_MEDIATEK_MT7620 || NET_MEDIATEK_MT7621)
- 	select PHYLIB
--	---help---
--	  This driver supports the gigabit ethernet MACs in the
--	  MediaTek SoC family.
--
--config NET_MEDIATEK_DBG
--	bool "Mediatek Ethernet debug interface"
--	depends on NET_MEDIATEK_SOC
- 
--endif #NET_VENDOR_MEDIATEK
++	select PHYLIB
++
 +config NET_MEDIATEK_MDIO_RT2880
 +	def_bool NET_MEDIATEK_SOC
 +	depends on (NET_MEDIATEK_RT2880 || NET_MEDIATEK_RT3883)
@@ -98,16 +102,13 @@ Signed-off-by: Michael Lee <igvtee@gmail.com>
 +	def_tristate NET_MEDIATEK_SOC
 +	depends on NET_MEDIATEK_MT7621
 +endif
---- a/drivers/net/ethernet/mediatek/Makefile
+--- /dev/null
 +++ b/drivers/net/ethernet/mediatek/Makefile
-@@ -1,6 +1,20 @@
- #
--# Makefile for the Mediatek SoCs built-in ethernet macs
+@@ -0,0 +1,20 @@
++#
 +# Makefile for the Ralink SoCs built-in ethernet macs
- #
- 
--obj-$(CONFIG_NET_MEDIATEK_SOC)			+= mtk_eth_soc.o
--obj-$(CONFIG_NET_MEDIATEK_DBG)			+= mtk_eth_dbg.o
++#
++
 +mtk-eth-soc-y					+= mtk_eth_soc.o ethtool.o
 +
 +mtk-eth-soc-$(CONFIG_NET_MEDIATEK_MDIO)		+= mdio.o

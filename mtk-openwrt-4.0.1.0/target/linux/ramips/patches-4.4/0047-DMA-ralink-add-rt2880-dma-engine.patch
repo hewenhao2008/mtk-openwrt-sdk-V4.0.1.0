@@ -35,7 +35,7 @@ Signed-off-by: John Crispin <blogic@openwrt.org>
  
 --- a/drivers/dma/Makefile
 +++ b/drivers/dma/Makefile
-@@ -66,5 +66,7 @@ obj-$(CONFIG_TI_DMA_CROSSBAR) += ti-dma-
+@@ -65,5 +65,7 @@ obj-$(CONFIG_TI_DMA_CROSSBAR) += ti-dma-
  obj-$(CONFIG_TI_EDMA) += edma.o
  obj-$(CONFIG_XGENE_DMA) += xgene-dma.o
  obj-$(CONFIG_ZX_DMA) += zx296702_dma.o
